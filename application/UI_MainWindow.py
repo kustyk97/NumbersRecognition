@@ -16,9 +16,20 @@ from PyQt5.QtGui import QPixmap, QImage
 import numpy as np
 import cv2 as cv
 from drawinngArea import DrawingArea
-from customNN.predict import predict
+
+
+import sys
+import os
+sys.path.append(os.path.abspath('../numberClassifier'))
+from numberClassifier import NumberClassifier
+
+# from customNN.predict import predict
 
 class Ui_MainWindow(object):
+    def __init__(self):
+        self.numberClassifier = NumberClassifier()
+        self.numberClassifier.load_model("../models/model_with_classes.pth")
+        
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(370, 330)
@@ -93,8 +104,8 @@ class Ui_MainWindow(object):
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
         self.label_prediction_info = QtWidgets.QLabel(self.verticalLayoutWidget)
-        self.label_prediction_info.setMinimumSize(QtCore.QSize(0, 60))
-        self.label_prediction_info.setMaximumSize(QtCore.QSize(16777215, 60))
+        self.label_prediction_info.setMinimumSize(QtCore.QSize(0, 100))
+        self.label_prediction_info.setMaximumSize(QtCore.QSize(16777215, 100))
         self.label_prediction_info.setText("")
         self.label_prediction_info.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.label_prediction_info.setWordWrap(True)
@@ -141,10 +152,10 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label_2.setText(_translate("MainWindow", "Draw number"))
-        self.label_4.setText(_translate("MainWindow", "Resized image"))
+        self.label_4.setText(_translate("MainWindow", "Input image"))
         self.pushButton_predict.setText(_translate("MainWindow", "Predict"))
         self.label_info2.setText(_translate("MainWindow", "Predicted class"))
-        self.label_preditcion_result.setText(_translate("MainWindow", "TextLabel"))
+        self.label_preditcion_result.setText(_translate("MainWindow", ""))
         self.label.setText(_translate("MainWindow", "Prediction details:"))
         self.pushButton_close.setText(_translate("MainWindow", "Exit"))
         self.pushButton_reset_image.setText(_translate("MainWindow", "Reset image"))
@@ -155,8 +166,11 @@ class Ui_MainWindow(object):
     def predict(self):
 
         cv_image = self.drawing_area.get_image()
-        resized_image = cv.resize(cv_image, (28, 28))
-        results = predict(resized_image)
+        class_name, results = self.numberClassifier.predict(cv_image)
+        self.label_preditcion_result.setText(f"{class_name}")
+        result_text = "\t".join([f"{result['class_name']}: {result['pred']:.3f}" for result in results])
+
+        self.label_prediction_info.setText(result_text)
         #TODO: add prediction info
 
     def reset_image(self):
@@ -166,6 +180,7 @@ class Ui_MainWindow(object):
 
         cv_image = self.drawing_area.get_image()
         resized_image = cv.resize(cv_image, (28, 28))
+        resized_image = 255 - resized_image
         resized_image = cv.resize(resized_image, (100, 100), interpolation = cv.INTER_AREA)
 
         result_pixmap = self.opencv_to_qpixmap(resized_image)
