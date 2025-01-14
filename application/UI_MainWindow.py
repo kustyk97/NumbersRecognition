@@ -15,20 +15,20 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QImage
 import numpy as np
 import cv2 as cv
-from drawinngArea import DrawingArea
+from application.drawinngArea import DrawingArea
 
 
 import sys
 import os
-sys.path.append(os.path.abspath('../numberClassifier'))
-from numberClassifier import NumberClassifier
+# sys.path.append(os.path.abspath('./numberClassifier'))
+from numberClassifier.numberClassifier import NumberClassifier
 
 # from customNN.predict import predict
 
 class Ui_MainWindow(object):
     def __init__(self):
         self.numberClassifier = NumberClassifier()
-        self.numberClassifier.load_model("../models/model_with_classes.pth")
+        self.numberClassifier.load_model("models/model_with_classes.pth")
         
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -150,7 +150,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "NumbersRecognition"))
         self.label_2.setText(_translate("MainWindow", "Draw number"))
         self.label_4.setText(_translate("MainWindow", "Input image"))
         self.pushButton_predict.setText(_translate("MainWindow", "Predict"))

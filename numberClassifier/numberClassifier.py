@@ -1,4 +1,4 @@
-from model import Classifier
+from .model import Classifier
 import torch
 import numpy as np
 from torchvision import transforms
