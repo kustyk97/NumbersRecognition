@@ -25,9 +25,9 @@ from numberClassifier.numberClassifier import NumberClassifier
 
 
 class Ui_MainWindow(object):
-    def __init__(self):
+    def __init__(self, path_to_model: str):
         self.numberClassifier = NumberClassifier()
-        self.numberClassifier.load_model("models/model_with_classes.pth")
+        self.numberClassifier.load_model(path=path_to_model)
         
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
