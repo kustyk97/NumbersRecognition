@@ -24,7 +24,7 @@ def get_args():
     parser.add_argument("--path_to_save", type=str, default="../models/model_with_classes.pth", help="The path to save the trained model.")
     parser.add_argument("--batch_size", type=int, default=32, help="The batch size to use for training.")
     parser.add_argument("--num_epochs", type=int, default=10, help="The number of epochs to train the model.")
-    parser.add_argument("-lr", type=float, default=1e-3, help="The learning rate to use for training.")
+    parser.add_argument("--lr", type=float, default=1e-3, help="The learning rate to use for training.")
     return parser.parse_args()
 
 """

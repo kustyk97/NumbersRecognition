@@ -44,12 +44,17 @@ This repository containst two modules:
 ### Application
 If you want to run main aplication, you can do this by run the following command:
 ```bash
-python main.py
+python main.py 
+    --path_to_model="The path to the model to load."
 ```
 ### Train 
 You can train your own model, by run the following command:
 ```bash
 python numberClassifier/train.py 
+    --path_to_save="The path to save the trained model."
+    --batch_size="The batch size to use for training."
+    --num_epoch="The number of epochs to train the model."
+    --lr="The learning rate to use for training."
 ```
 ### Plots
 You can plot results of training, by run the following command:
