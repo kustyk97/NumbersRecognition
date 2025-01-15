@@ -34,7 +34,7 @@ class NumberClassifier:
         self.classes_names = checkpoint[CLASSES_KEY]
 
     """Predicts the class of the given image and returns the class name and the probabilities of each class."""
-    def predict(self, image: np.ndarray) -> list(str, list(dict)):
+    def predict(self, image: np.ndarray):
         self.model.eval()
         with torch.no_grad():
             image = self.preprocess(image)

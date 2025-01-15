@@ -23,7 +23,6 @@ import os
 # sys.path.append(os.path.abspath('./numberClassifier'))
 from numberClassifier.numberClassifier import NumberClassifier
 
-# from customNN.predict import predict
 
 class Ui_MainWindow(object):
     def __init__(self):
@@ -168,14 +167,15 @@ class Ui_MainWindow(object):
         cv_image = self.drawing_area.get_image()
         class_name, results = self.numberClassifier.predict(cv_image)
         self.label_preditcion_result.setText(f"{class_name}")
-        result_text = "\t".join([f"{result['class_name']}: {result['pred']:.3f}" for result in results])
 
+        result_text = "\t".join([f"{result['class_name']}: {result['pred']:.3f}" for result in results])
         self.label_prediction_info.setText(result_text)
-        #TODO: add prediction info
+
 
     def reset_image(self):
         self.drawing_area.reset_image()
         pass
+    
     def update_resize_image(self):
 
         cv_image = self.drawing_area.get_image()
@@ -184,18 +184,13 @@ class Ui_MainWindow(object):
         resized_image = cv.resize(resized_image, (100, 100), interpolation = cv.INTER_AREA)
 
         result_pixmap = self.opencv_to_qpixmap(resized_image)
-        # resized_pixmap =  result_pixmap.scaled(28, 28, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        # resized_pixmap =  resized_pixmap.scaled(28*3, 28*3, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.label_resized_image.setPixmap(result_pixmap)
 
-
+    """Convert the OpenCV image to QPixmap."""
     def opencv_to_qpixmap(self, cv_image):
-    # Konwersja z BGR do RGB
         rgb_image = cv.cvtColor(cv_image, cv.COLOR_BGR2RGB)
         height, width, channel = rgb_image.shape
         bytes_per_line = channel * width
-        # Tworzenie QImage z danych NumPy
         qimage = QImage(rgb_image.data, width, height, bytes_per_line, QImage.Format_RGB888)
-        # Konwersja QImage do QPixmap
         pixmap = QPixmap.fromImage(qimage)
         return pixmap
