@@ -4,6 +4,7 @@ import numpy as np
 from torchvision import transforms
 import cv2 as cv
 
+#CONSTANTS
 IMAGE_WIDTH = 28
 IMAGE_HEIGHT = 28
 IMAGE_SIZE = (IMAGE_WIDTH, IMAGE_HEIGHT)
@@ -16,6 +17,7 @@ CLASSES_KEY = "class_names"
 
 class NumberClassifier:
 
+    """ Initializes the number classifier with a model and transformation pipeline."""
     def __init__(self):
         self.model = Classifier().to(device=DEVICE)
         self.classes_names = None
@@ -25,16 +27,14 @@ class NumberClassifier:
             transforms.Normalize((0.5,), (0.5,))
         ])
 
-        pass
-    #TODO load model
-
-    def load_model(self, path="../models/model_with_classes.pth")->bool:
+    """Load the model from the given path. The model should be saved as a dictionary with the model state dict and the class names."""
+    def load_model(self, path="../models/model_with_classes.pth") -> None:
         checkpoint = torch.load(path, weights_only=True)
         self.model.load_state_dict(checkpoint[MODEL_STATE_DICT_KEY])
         self.classes_names = checkpoint[CLASSES_KEY]
 
-
-    def predict(self, image: np.ndarray):
+    """Predicts the class of the given image and returns the class name and the probabilities of each class."""
+    def predict(self, image: np.ndarray) -> list(str, list(dict)):
         self.model.eval()
         with torch.no_grad():
             image = self.preprocess(image)
@@ -49,11 +49,10 @@ class NumberClassifier:
 
             return class_name, results
     
-    def preprocess(self, image):
+    """Preprocesses the image by resizing it to the correct size, converting it to grayscale and normalizing it."""
+    def preprocess(self, image: np.ndarray) -> torch.Tensor:
         image = cv.resize(image, IMAGE_SIZE)
         image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
         image = 255 - image
         image_tensor = self.transform(image).unsqueeze(0)
         return image_tensor                
-
-    #TODO add get info with % value 
