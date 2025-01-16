@@ -1,0 +1,10 @@
+matplotlib==3.10.0
+numpy==2.2.1
+pandas==2.2.3
+PyQt5==5.15.11
+PyQt5_sip==12.13.0
+seaborn==0.13.2
+torch==2.5.1
+torchvision==0.15.2a0
+tqdm==4.66.5
+cv2
