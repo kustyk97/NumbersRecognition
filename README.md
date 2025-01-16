@@ -1,17 +1,17 @@
 # NumbersRecognition
 
-This repository containst two modules:
+This repository contains two modules:
 - Number Classifier 
 
-    This is an implementation of CNN model trained on MNIST dataset, to classifire images of numbers (0-9)
+ This is an implementation of the CNN model trained on the MNIST dataset, to classify images of numbers (0-9)
 
-    ![](figures/Acc.png)
+ ![](figures/Acc.png)
 
 - Application 
 
-    This is an application whitch use Number Classifier module, to recognition number on image, whitch is written by user inside application. Belowe is an example screenshot of application window 
+ This is an application that uses the Number Classifier module, to recognize number on image, which is written by the user inside the application. Below is an example screenshot of the application window 
 
-    ![Example screen from application](figures/AppScreenshot.png)
+ ![Example screen from application](figures/AppScreenshot.png)
 
 ## Requirements
 - Python 3.x
@@ -27,22 +27,22 @@ This repository containst two modules:
 
 ## Installation
 1. Clone the repository:
-    ```bash
+ ```bash
     git clone https://github.com/kustyk97/NumbersRecognition.git
-    ```
+ ```
 2. Navigate to the project directory:
-    ```bash
+ ```bash
     cd NumbersRecognition
-    ```
+ ```
 3. Install the required packages:
-    ```bash
+ ```bash
     pip install -r requirements.txt
-    ```
+ ```
 
 
 ## Usage
 ### Application
-If you want to run main aplication, you can do this by run the following command:
+If you want to run the main application, you can do this by run the following command:
 ```bash
 python main.py 
     --path_to_model="The path to the model to load."
@@ -57,7 +57,7 @@ python numberClassifier/train.py
     --lr="The learning rate to use for training."
 ```
 ### Plots
-You can plot results of training, by run the following command:
+You can plot the results of training, by run the following command:
 ```bash
 python plots.py 
 ```
