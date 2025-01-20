@@ -3,11 +3,18 @@ from PyQt5 import QtWidgets
 import argparse
 import sys
 
+
 def arg_parse():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--path_to_model", type=str, default="models/model_with_classes.pth", help="The path to the model to load.")
+    parser.add_argument(
+        "--path_to_model",
+        type=str,
+        default="models/model_with_classes.pth",
+        help="The path to the model to load.",
+    )
 
     return parser.parse_args()
+
 
 if __name__ == "__main__":
     arg = arg_parse()

@@ -20,6 +20,7 @@ from application.drawinngArea import DrawingArea
 
 import sys
 import os
+
 # sys.path.append(os.path.abspath('./numberClassifier'))
 from numberClassifier.numberClassifier import NumberClassifier
 
@@ -28,7 +29,7 @@ class Ui_MainWindow(object):
     def __init__(self, path_to_model: str):
         self.numberClassifier = NumberClassifier()
         self.numberClassifier.load_model(path=path_to_model)
-        
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(370, 330)
@@ -93,20 +94,26 @@ class Ui_MainWindow(object):
         self.label_preditcion_result.setObjectName("label_preditcion_result")
         self.verticalLayout_2.addWidget(self.label_preditcion_result)
         self.horizontalLayout.addLayout(self.verticalLayout_2)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout.addItem(spacerItem)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.label = QtWidgets.QLabel(self.verticalLayoutWidget)
         self.label.setMinimumSize(QtCore.QSize(0, 15))
         self.label.setMaximumSize(QtCore.QSize(16777215, 15))
-        self.label.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
+        )
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
         self.label_prediction_info = QtWidgets.QLabel(self.verticalLayoutWidget)
         self.label_prediction_info.setMinimumSize(QtCore.QSize(0, 100))
         self.label_prediction_info.setMaximumSize(QtCore.QSize(16777215, 100))
         self.label_prediction_info.setText("")
-        self.label_prediction_info.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.label_prediction_info.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
+        )
         self.label_prediction_info.setWordWrap(True)
         self.label_prediction_info.setObjectName("label_prediction_info")
         self.verticalLayout.addWidget(self.label_prediction_info)
@@ -115,7 +122,9 @@ class Ui_MainWindow(object):
         self.pushButton_reset_image = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.pushButton_reset_image.setObjectName("pushButton_reset_image")
         self.horizontalLayout_buttons.addWidget(self.pushButton_reset_image)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 1, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            40, 1, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout_buttons.addItem(spacerItem1)
         self.pushButton_close = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.pushButton_close.setObjectName("pushButton_close")
@@ -134,18 +143,19 @@ class Ui_MainWindow(object):
         self.pushButton_close.clicked.connect(self.exit)
         self.pushButton_predict.clicked.connect(self.predict)
         self.pushButton_reset_image.clicked.connect(self.reset_image)
-        self.drawing_area = DrawingArea(QtCore.QSize(100, 100))   # Tworzenie obszaru do rysowania
+        self.drawing_area = DrawingArea(
+            QtCore.QSize(100, 100)
+        )  # Tworzenie obszaru do rysowania
 
         self.drawing_area.signal.connect(self.update_resize_image)
-        layout =  QtWidgets.QHBoxLayout()
+        layout = QtWidgets.QHBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(self.drawing_area)
         self.frame.setLayout(layout)
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        
-        self.reset_image()
 
+        self.reset_image()
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -168,29 +178,35 @@ class Ui_MainWindow(object):
         class_name, results = self.numberClassifier.predict(cv_image)
         self.label_preditcion_result.setText(f"{class_name}")
 
-        result_text = "\t".join([f"{result['class_name']}: {result['pred']:.3f}" for result in results])
+        result_text = "\t".join(
+            [f"{result['class_name']}: {result['pred']:.3f}" for result in results]
+        )
         self.label_prediction_info.setText(result_text)
-
 
     def reset_image(self):
         self.drawing_area.reset_image()
         pass
-    
+
     def update_resize_image(self):
 
         cv_image = self.drawing_area.get_image()
         resized_image = cv.resize(cv_image, (28, 28))
         resized_image = 255 - resized_image
-        resized_image = cv.resize(resized_image, (100, 100), interpolation = cv.INTER_AREA)
+        resized_image = cv.resize(
+            resized_image, (100, 100), interpolation=cv.INTER_AREA
+        )
 
         result_pixmap = self.opencv_to_qpixmap(resized_image)
         self.label_resized_image.setPixmap(result_pixmap)
 
     """Convert the OpenCV image to QPixmap."""
+
     def opencv_to_qpixmap(self, cv_image):
         rgb_image = cv.cvtColor(cv_image, cv.COLOR_BGR2RGB)
         height, width, channel = rgb_image.shape
         bytes_per_line = channel * width
-        qimage = QImage(rgb_image.data, width, height, bytes_per_line, QImage.Format_RGB888)
+        qimage = QImage(
+            rgb_image.data, width, height, bytes_per_line, QImage.Format_RGB888
+        )
         pixmap = QPixmap.fromImage(qimage)
         return pixmap
