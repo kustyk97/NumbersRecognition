@@ -59,7 +59,9 @@ python numberClassifier/train.py
 ### Plots
 You can plot the results of training, by run the following command:
 ```bash
-python plots.py 
+python tools/plots.py 
+    --src="Path to the results file"
+    --dst="Path to the results file"
 ```
 ## License
 This project is licensed under the MIT License.
