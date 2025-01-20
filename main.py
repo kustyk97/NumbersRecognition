@@ -1,4 +1,4 @@
-from application.UI_MainWindow import Ui_MainWindow
+from lib.application.UI_MainWindow import Ui_MainWindow
 from PyQt5 import QtWidgets
 import argparse
 import sys
